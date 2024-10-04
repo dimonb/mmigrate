@@ -68,10 +68,26 @@ To perform the migration, you will need the following tools:
 
 #### Run the Migration Script
 
+Use the following command to execute the migration script on Linux/macOS:
+
+```bash
+./run.sh <workspace> <chatid>
+```
+
+- `<workspace>`: The name of your **Mattermost team**.
+- `<chatid>`: The identifier for the Slack channel or group you want to migrate.
+
+**Example:**
+
+```bash
+./run.sh ebac-online FAKECHATID1234
+```
+
+
 In Windows, use PowerShell to execute the script:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File ./run.ps1 <workspace> <chatid>
+./run.ps1 <workspace> <chatid>
 ```
 
 - `<workspace>`: The name of your **Mattermost team**.
@@ -80,8 +96,7 @@ powershell -ExecutionPolicy Bypass -File ./run.ps1 <workspace> <chatid>
 **Example:**
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .
-un.ps1 "ebac-online" "FAKECHATID1234"
+./run.ps1 "ebac-online" "FAKECHATID1234"
 ```
 
 **Script Breakdown:**
