@@ -1,6 +1,6 @@
 # Slack to Mattermost Migration Guide
 
-This guide provides comprehensive instructions for migrating data from Slack to Mattermost using the provided scripts.
+This guide provides comprehensive instructions for migrating data from Slack to Mattermost using the provided scripts. It includes steps for both Linux/macOS and Windows users.
 
 ---
 
@@ -10,8 +10,8 @@ This guide provides comprehensive instructions for migrating data from Slack to 
 - [Prerequisites](#prerequisites)
 - [Required Tools](#required-tools)
 - [Migration Steps](#migration-steps)
-  - [1. Generate `users.json`](#1-generate-usersjson)
-  - [2. Run the Migration Script](#2-run-the-migration-script)
+  - [Linux/macOS Instructions](#linuxmacos-instructions)
+  - [Windows Instructions](#windows-instructions)
 - [Notes](#notes)
 - [Conclusion](#conclusion)
 - [Support](#support)
@@ -30,7 +30,7 @@ This repository contains scripts and instructions to help you migrate your Slack
 
 - **Access to Slack Workspace**: Ensure you have the necessary permissions to export data from your Slack workspace.
 - **Access to Mattermost Instance**: You need administrative access to your Mattermost server.
-- **Command-Line Interface (CLI)**: Familiarity with using the terminal or command prompt.
+- **Command-Line Interface (CLI)**: Familiarity with using the terminal, command prompt, or PowerShell.
 - **Python 3**: Installed on your system.
 - **Git and Wget**: For downloading repositories and files.
 - **Permissions**: The user running the scripts should have read/write permissions on the necessary directories and files.
@@ -65,67 +65,36 @@ To perform the migration, you will need the following tools:
 
 ## Migration Steps
 
-### 1. Generate `users.json`
+### Linux/macOS Instructions
 
-Before running the migration, you need to get a list of all users in your Mattermost instance.
+#### Run the Migration Script
 
-**Command:**
+In Windows, use PowerShell to execute the script:
 
-```bash
-mmctl user list --all --json > users.json
+```powershell
+./run.ps1 -workspace <workspace> -chatid <chatid>
 ```
 
-This command outputs all users in JSON format to a file named `users.json`.
-
-### 2. Run the Migration Script
-
-**Script Usage:**
-
-```bash
-./run.sh <workspace> <chatid> 
-```
-
-- `<workspace>`: The name of your **Mattermost team** (ebac-online is our).
+- `<workspace>`: The name of your **Mattermost team**.
 - `<chatid>`: The identifier for the Slack channel or group you want to migrate.
 
 **Example:**
 
-```bash
-./run.sh ebac-online C06K85DGQD8
+```powershell
+./run.ps1 -workspace "ebac-online" -chatid "FAKECHATID1234"
 ```
 
 **Script Breakdown:**
 
-1. **Create Directory:**
+1. **Create Directory**: The script creates a directory named after the `<chatid>`.
 
-   The script creates a directory named after the `<chatid>`.
+2. **Download Slack Data**: Checks if `mm-export.zip` exists. If not, downloads it using `slackdump`.
 
-2. **Download Slack Data:**
+3. **Transform Data**: Uses `mmetl` to transform the Slack export to a Mattermost import file. The `-t` option specifies the target Mattermost team (`<workspace>`).
 
-   - Checks if `mm-export.zip` exists.
-   - If not, downloads it using `slackdump`.
+4. **Process Import File**: Runs `fix_users.py` to adjust user information. Splits large import files using `split_large.py`.
 
-3. **Transform Data:**
-
-   - Uses `mmetl` to transform the Slack export to a Mattermost import file.
-   - The `-t` option specifies the target Mattermost team (`<workspace>`).
-
-4. **Process Import File:**
-
-   - Runs `fix_users.py` to adjust user information.
-   - Splits large import files using `split_large.py`.
-
-5. **Import into Mattermost:**
-
-   - For each chunk, the script:
-     - Compresses the chunk.
-     - Uploads the ZIP file.
-     - Processes the import using `mmctl`.
-
-**Important Note:**
-
-- The `<workspace>` parameter should match the name of your Mattermost team where you want to import the data.
-- Ensure that the Mattermost team exists before running the script.
+5. **Import into Mattermost**: For each chunk, the script compresses the chunk, uploads the ZIP file, and processes the import using `mmctl`.
 
 ---
 
@@ -168,3 +137,4 @@ If you encounter any issues or have questions:
 This guide is provided under the [MIT License](https://opensource.org/licenses/MIT).
 
 ---
+
