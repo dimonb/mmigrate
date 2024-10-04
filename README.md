@@ -30,10 +30,9 @@ This repository contains scripts and instructions to help you migrate your Slack
 
 - **Access to Slack Workspace**: Ensure you have the necessary permissions to export data from your Slack workspace.
 - **Access to Mattermost Instance**: You need administrative access to your Mattermost server.
-- **Command-Line Interface (CLI)**: Familiarity with using the terminal, command prompt, or PowerShell.
 - **Python 3**: Installed on your system.
-- **Git and Wget**: For downloading repositories and files.
-- **Permissions**: The user running the scripts should have read/write permissions on the necessary directories and files.
+- **Mattermost Command-Line Tool (mmctl)**: Installed and configured on your system.
+- **Git**: For downloading repositories and files.
 
 ---
 
@@ -72,16 +71,17 @@ To perform the migration, you will need the following tools:
 In Windows, use PowerShell to execute the script:
 
 ```powershell
-./run.ps1 -workspace <workspace> -chatid <chatid>
+powershell -ExecutionPolicy Bypass -File ./run.ps1 <workspace> <chatid>
 ```
 
 - `<workspace>`: The name of your **Mattermost team**.
-- `<chatid>`: The identifier for the Slack channel or group you want to migrate.
+- `<chatid>`: The identifier for the Slack channel or group you want to migrate. Note that these parameters are positional and should be provided without flag names.
 
 **Example:**
 
 ```powershell
-./run.ps1 -workspace "ebac-online" -chatid "FAKECHATID1234"
+powershell -ExecutionPolicy Bypass -File .
+un.ps1 "ebac-online" "FAKECHATID1234"
 ```
 
 **Script Breakdown:**
